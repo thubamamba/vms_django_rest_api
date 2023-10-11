@@ -7,7 +7,7 @@ from django_tenants.utils import connection
 from tenants.models import Tenant, Domain
 from .serializers import AccountSerializer
 
-from django_tenant_react.settings import APPLICATION_DOMAIN
+from vms_django_rest_api.settings import APPLICATION_DOMAIN
 
 
 @transaction.atomic
