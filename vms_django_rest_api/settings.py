@@ -20,24 +20,18 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&g(@2zfzmxmsds4a*#j$&0n9#k*_ni=c35y--mz15)9j)=%^_='
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
+# SECRET_KEY = '&g(@2zfzmxmsds4a*#j$&0n9#k*_ni=c35y--mz15)9j)=%^_='
+SECRET_KEY = config('SECRET_KEY')
 
 # Application definition
-
 SHARED_APPS = [
     'django_tenants',
     'tenants',
+    'drf_yasg',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,6 +47,7 @@ TENANT_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'drf_yasg',
     'rest_framework',
     'django_filters',
     'auditlog',
@@ -72,7 +67,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'common.auditlog_middleware.AuditlogMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -84,6 +78,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'vms_django_rest_api.urls'
 PUBLIC_SCHEMA_URLCONF = 'vms_django_rest_api.urls_public'
 
+# CORS SETTINGS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = [
     'Accept',
@@ -117,35 +112,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vms_django_rest_api.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-# DATABASE CONFIG
-DATABASES = {
-    "default": {
-        # "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "ENGINE": "django_tenants.postgresql_backend",
-        "NAME": config("DATABASE_NAME-DEV"),
-        "USER": config("DATABASE_USER-DEV"),
-        "PASSWORD": config("DATABASE_PASSWORD-DEV"),
-        "HOST": "localhost",
-        "PORT": "",
-    }
-}
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django_tenants.postgresql_backend',
-#         'NAME': os.getenv('DB_NAME', 'postgres'),
-#         'USER': os.getenv('DB_USER', 'postgres'),
-#         'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
-#         'HOST': os.getenv('DB_HOST', 'postgres'),
-#         'PORT': os.getenv('DB_PORT', 5432),
-#     }
-# }
-
 DATABASE_ROUTERS = ['django_tenants.routers.TenantSyncRouter']
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -178,13 +145,6 @@ REST_FRAMEWORK = {
 
 LANGUAGE_CODE = 'en'
 
-# LANGUAGES = [
-#     ('en', _('English')),
-#     ('ar', _('Arabic')),
-# ]
-
-LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
-
 TIME_ZONE = 'Africa/Johannesburg'
 
 USE_I18N = True
@@ -199,11 +159,11 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'amqp://rabbitmq')
+# CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'amqp://rabbitmq')
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
 CELERY_IMPORTS = ['accounts.tasks']
 
 # SimpleJWT Configurations
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -232,12 +192,12 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-
+# Backend - Dashboard
 # JAZZMIN_SETTINGS = {
 #     "language_chooser": True,
 # }
 
-APPLICATION_DOMAIN = os.getenv('APPLICATION_DOMAIN', 'djangotenant.com')
+APPLICATION_DOMAIN = config("APPLICATION_DOMAIN", default="sivakashi.com")
 
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 LOGGING = {
@@ -265,3 +225,17 @@ LOGGING = {
         },
     },
 }
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# EMAIL SETTINGS
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
