@@ -6,7 +6,7 @@ from accounts.models import Account
 from tenants.models import Tenant, Domain
 
 
-class DjangoReduxTestCases(TestCase):
+class DjangoTestCases(TestCase):
     signup_url = f'http://{settings.APPLICATION_DOMAIN}:8000/auth/signup/'
     token_url = f'http://{settings.APPLICATION_DOMAIN}:8000/auth/token/'
 

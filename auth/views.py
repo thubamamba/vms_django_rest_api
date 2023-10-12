@@ -9,16 +9,16 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.models import Account
 from accounts.serializers import AccountSerializer
 from tenants.models import Tenant
-from .serializers import DjangoReduxJWTSerializers
+from .serializers import DjangoJWTSerializers
 
 from accounts.tasks import create_account, send_log_in_email
 
 # Create your views here.
 
 
-class DjangoReduxObtainToken(TokenObtainPairView):
+class DjangoObtainToken(TokenObtainPairView):
     permission_classes = [AllowAny]
-    serializer_class = DjangoReduxJWTSerializers
+    serializer_class = DjangoJWTSerializers
 
 
 @api_view(['POST'])

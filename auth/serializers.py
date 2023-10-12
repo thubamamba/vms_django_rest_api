@@ -4,7 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-class DjangoReduxJWTSerializers(TokenObtainPairSerializer):
+class DjangoJWTSerializers(TokenObtainPairSerializer):
 
     @classmethod
     def get_token(cls, user):

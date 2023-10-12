@@ -10,7 +10,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
-class DjangoReduxJWTAuthentication(BaseAuthentication):
+class DjangoJWTAuthentication(BaseAuthentication):
 
     def authenticate(self, request):
         User = get_user_model()

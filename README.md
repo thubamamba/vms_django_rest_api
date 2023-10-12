@@ -1,38 +1,66 @@
-# Django Rest API
-this is a simple todo list application, written with django and django rest framework, 
-support multitenancy and auditlog, and the front-end is written in ReactJS, 
-and for the state management Redux and React Context API are used.
+# VMS - Sivakashi Django Rest API
 
-# **getting started 🚦**
+This is the Visitor Management System API built with Django Rest Framework.
 
-- install docker
-- install docker-compose
-- clone the repo
-- initializing the app
+# **Getting Started 🚦**
 
-**installing docker 🐋**
+**Clone the repo**
 
-you can follow the steps [here](https://docs.docker.com/install/).
-they should be pretty simple :)
+    git clone git@github.com:thubamamba/vms_django_rest_api.git
 
-**installing docker-compose 🚢**
+**Initializing the app 🔨**
 
-follow the steps [here](https://docs.docker.com/compose/install/)
+First you need to edit your hosts file in your machine add the following line.
 
-**clone the repo**
+    127.0.0.1       sivakashi.com
 
-    git clone https://github.com/majid-cj/django_tenant_react.git
+You can do this on mac by running this command:
 
-**initializing the app 🔨**
+    sudo nano /etc/hosts
 
-first you need to edit your hosts file in your machine add the following line.
+**Installing the requirements 📦**
 
-    127.0.0.1       djangotenant.com
+Then you need to create a virtual environment and activate it.
 
-whenever you create an account in order to access it you need to append the hosts file with following pattern
+    python3 -m venv venv
+    source venv/bin/activate
 
-    127.0.0.1       [account_username].djangotenant.com
+Then you need to install the requirements.
 
-**docker-compose up**
+    pip install -r requirements.txt
 
-# that's it 😁
+Then you need to run the migrations.
+
+    python manage.py migrate --settings=vms_django_rest_api.settings_dev
+
+Then you need to create a superuser.
+
+    python manage.py createsuperuser --settings=vms_django_rest_api.settings_dev
+
+Then you need to run the server.
+
+    python manage.py runserver --settings=vms_django_rest_api.settings_dev
+
+Whenever you create an account in order to access it you need to append the hosts file with following pattern
+
+    127.0.0.1       [account_username].sivakashi.com
+
+**Running the tests 🧪**
+    
+        python manage.py test --settings=vms_django_rest_api.settings_dev
+
+**Authentication 🚪**
+
+We use JWT for authentication. 
+
+**Signing Up**
+
+    http://[subdomain].sivakashi.com:8000/auth/signup/
+
+**Logging In**
+    
+        http://[subdomain].sivakashi.com:8000/auth/login/
+
+**Refreshing the token**
+
+    http://[subdomain].sivakashi.com:8000/auth/refresh/token/

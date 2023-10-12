@@ -12,9 +12,9 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
 from unittest.mock import patch
 
 
-from auth.utils import DjangoReduxJWTAuthentication
+from auth.utils import DjangoJWTAuthentication
 
-from common.tests import DjangoReduxTestCases
+from common.tests import DjangoTestCases
 
 from .models import TodoGroup, Todo
 from tenants.models import Tenant, Domain
@@ -23,7 +23,7 @@ from tenants.models import Tenant, Domain
 # Create your tests here.
 
 
-class TodoGroupTestModel(DjangoReduxTestCases):
+class TodoGroupTestModel(DjangoTestCases):
     def setUp(self):
         connection.set_schema_to_public()
         self.tenant_2 = Tenant.objects.create(schema_name='tenant2')
@@ -43,7 +43,7 @@ class TodoGroupTestModel(DjangoReduxTestCases):
         connection.set_schema_to_public()
 
 
-class TodoTestModel(DjangoReduxTestCases):
+class TodoTestModel(DjangoTestCases):
     def setUp(self):
         connection.set_schema_to_public()
 
@@ -76,20 +76,20 @@ class TodoTestModel(DjangoReduxTestCases):
         self.assertEquals(count, 1)
 
 
-class TodoGroupTestAPI(APITestCase, DjangoReduxTestCases):
+class TodoGroupTestAPI(APITestCase, DjangoTestCases):
     def setUp(self):
         self.data = {
             'name': 'todo group',
         }
         self.client = TenantClient(self.tenant)
 
-    @patch.object(DjangoReduxJWTAuthentication, 'authenticate')
+    @patch.object(DjangoJWTAuthentication, 'authenticate')
     def test_create_todo_group_api(self, mock):
         mock.return_value = self.account, {}
         response = self.client.post(reverse('todo:todo-group-list'), self.data)
         self.assertEquals(response.status_code, HTTP_201_CREATED)
 
-    @patch.object(DjangoReduxJWTAuthentication, 'authenticate')
+    @patch.object(DjangoJWTAuthentication, 'authenticate')
     def test_get_todo_group_by_id_api(self, mock):
         mock.return_value = self.account, {}
         response = self.client.post(reverse('todo:todo-group-list'), self.data)
@@ -101,7 +101,7 @@ class TodoGroupTestAPI(APITestCase, DjangoReduxTestCases):
         self.assertEquals(response.status_code, HTTP_200_OK)
         self.assertEquals(response.data['name'], self.data['name'])
 
-    @patch.object(DjangoReduxJWTAuthentication, 'authenticate')
+    @patch.object(DjangoJWTAuthentication, 'authenticate')
     def test_update_todo_group_api(self, mock):
         mock.return_value = self.account, {}
         response = self.client.post(reverse('todo:todo-group-list'), self.data)
@@ -117,7 +117,7 @@ class TodoGroupTestAPI(APITestCase, DjangoReduxTestCases):
         self.assertEquals(response.data['name'], 'update todo group')
 
 
-class TodoTestAPI(APITestCase, DjangoReduxTestCases):
+class TodoTestAPI(APITestCase, DjangoTestCases):
     def setUp(self):
         self.group = {
             'name': 'todo group',
@@ -130,7 +130,7 @@ class TodoTestAPI(APITestCase, DjangoReduxTestCases):
         }
         self.client = TenantClient(self.tenant)
 
-    @patch.object(DjangoReduxJWTAuthentication, 'authenticate')
+    @patch.object(DjangoJWTAuthentication, 'authenticate')
     def test_create_todo_api(self, mock):
         mock.return_value = self.account, {}
         response = self.client.post(
@@ -141,7 +141,7 @@ class TodoTestAPI(APITestCase, DjangoReduxTestCases):
         response = self.client.post(reverse('todo:todo-list'), self.data)
         self.assertEquals(response.status_code, HTTP_201_CREATED)
 
-    @patch.object(DjangoReduxJWTAuthentication, 'authenticate')
+    @patch.object(DjangoJWTAuthentication, 'authenticate')
     def test_update_todo_api(self, mock):
         mock.return_value = self.account, {}
         response = self.client.post(

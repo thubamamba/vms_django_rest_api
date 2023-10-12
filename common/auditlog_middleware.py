@@ -7,7 +7,7 @@ from django.utils.functional import curry
 from django.apps import apps
 from auditlog.models import LogEntry
 
-from auth.utils import DjangoReduxJWTAuthentication
+from auth.utils import DjangoJWTAuthentication
 
 from django.utils.deprecation import MiddlewareMixin
 
@@ -26,7 +26,7 @@ class AuditlogMiddleware(MiddlewareMixin):
         if request.META.get('HTTP_X_FORWARDED_FOR'):
             threadlocal.auditlog['remote_addr'] = request.META.get('HTTP_X_FORWARDED_FOR').split(',')[0]
 
-        auth = DjangoReduxJWTAuthentication().authenticate(request)
+        auth = DjangoJWTAuthentication().authenticate(request)
 
         if auth:
             user, _ = auth

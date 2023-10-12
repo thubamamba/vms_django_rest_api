@@ -135,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ['auth.utils.DjangoReduxJWTAuthentication'],
+    'DEFAULT_AUTHENTICATION_CLASSES': ['auth.utils.DjangoJWTAuthentication'],
     'DEFAULT_PAGINATION_CLASS': 'common.paginations.DjangoReduxPagination',
 }
 
